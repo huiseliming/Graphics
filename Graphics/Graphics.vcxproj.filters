@@ -23,5 +23,55 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source\Window">
+      <UniqueIdentifier>{260d9144-63f6-4aad-95f9-5a5f1c600674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool\Exception">
+      <UniqueIdentifier>{125571b4-2619-41fe-b7df-ce0f6de7ac47}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Window\Window.cpp">
+      <Filter>Source\Window</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window\Window.h">
+      <Filter>Source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\HrException.h">
+      <Filter>Source\Tool\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\AssertException.h">
+      <Filter>Source\Tool\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BlobExpection.h">
+      <Filter>Source\Tool\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BaseException.h">
+      <Filter>Source\Tool\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Exception.h">
+      <Filter>Source\Tool\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\D3D12Header.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\d3dx12.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Graphics.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon.ico">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
