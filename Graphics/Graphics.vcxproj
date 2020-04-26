@@ -19,11 +19,103 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\ImGui\imgui.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\D3D12Header.h" />
     <ClInclude Include="Graphics\d3dx12.h" />
+    <ClInclude Include="Graphics\ImGui\imconfig.h" />
+    <ClInclude Include="Graphics\ImGui\imgui.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_dx12.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_internal.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Library\AssimpHeader.h" />
+    <ClInclude Include="Library\assimp\aabb.h" />
+    <ClInclude Include="Library\assimp\ai_assert.h" />
+    <ClInclude Include="Library\assimp\anim.h" />
+    <ClInclude Include="Library\assimp\BaseImporter.h" />
+    <ClInclude Include="Library\assimp\Bitmap.h" />
+    <ClInclude Include="Library\assimp\BlobIOSystem.h" />
+    <ClInclude Include="Library\assimp\ByteSwapper.h" />
+    <ClInclude Include="Library\assimp\camera.h" />
+    <ClInclude Include="Library\assimp\cexport.h" />
+    <ClInclude Include="Library\assimp\cfileio.h" />
+    <ClInclude Include="Library\assimp\cimport.h" />
+    <ClInclude Include="Library\assimp\color4.h" />
+    <ClInclude Include="Library\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="Library\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="Library\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="Library\assimp\config.h" />
+    <ClInclude Include="Library\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="Library\assimp\DefaultIOStream.h" />
+    <ClInclude Include="Library\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="Library\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="Library\assimp\Defines.h" />
+    <ClInclude Include="Library\assimp\defs.h" />
+    <ClInclude Include="Library\assimp\Exceptional.h" />
+    <ClInclude Include="Library\assimp\Exporter.hpp" />
+    <ClInclude Include="Library\assimp\fast_atof.h" />
+    <ClInclude Include="Library\assimp\GenericProperty.h" />
+    <ClInclude Include="Library\assimp\Hash.h" />
+    <ClInclude Include="Library\assimp\Importer.hpp" />
+    <ClInclude Include="Library\assimp\importerdesc.h" />
+    <ClInclude Include="Library\assimp\IOStream.hpp" />
+    <ClInclude Include="Library\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="Library\assimp\IOSystem.hpp" />
+    <ClInclude Include="Library\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="Library\assimp\light.h" />
+    <ClInclude Include="Library\assimp\LineSplitter.h" />
+    <ClInclude Include="Library\assimp\LogAux.h" />
+    <ClInclude Include="Library\assimp\Logger.hpp" />
+    <ClInclude Include="Library\assimp\LogStream.hpp" />
+    <ClInclude Include="Library\assimp\Macros.h" />
+    <ClInclude Include="Library\assimp\material.h" />
+    <ClInclude Include="Library\assimp\MathFunctions.h" />
+    <ClInclude Include="Library\assimp\matrix3x3.h" />
+    <ClInclude Include="Library\assimp\matrix4x4.h" />
+    <ClInclude Include="Library\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="Library\assimp\mesh.h" />
+    <ClInclude Include="Library\assimp\metadata.h" />
+    <ClInclude Include="Library\assimp\NullLogger.hpp" />
+    <ClInclude Include="Library\assimp\ParsingUtils.h" />
+    <ClInclude Include="Library\assimp\pbrmaterial.h" />
+    <ClInclude Include="Library\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="Library\assimp\postprocess.h" />
+    <ClInclude Include="Library\assimp\Profiler.h" />
+    <ClInclude Include="Library\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="Library\assimp\qnan.h" />
+    <ClInclude Include="Library\assimp\quaternion.h" />
+    <ClInclude Include="Library\assimp\RemoveComments.h" />
+    <ClInclude Include="Library\assimp\scene.h" />
+    <ClInclude Include="Library\assimp\SceneCombiner.h" />
+    <ClInclude Include="Library\assimp\SGSpatialSort.h" />
+    <ClInclude Include="Library\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="Library\assimp\SmoothingGroups.h" />
+    <ClInclude Include="Library\assimp\SpatialSort.h" />
+    <ClInclude Include="Library\assimp\StandardShapes.h" />
+    <ClInclude Include="Library\assimp\StreamReader.h" />
+    <ClInclude Include="Library\assimp\StreamWriter.h" />
+    <ClInclude Include="Library\assimp\StringComparison.h" />
+    <ClInclude Include="Library\assimp\StringUtils.h" />
+    <ClInclude Include="Library\assimp\Subdivision.h" />
+    <ClInclude Include="Library\assimp\texture.h" />
+    <ClInclude Include="Library\assimp\TinyFormatter.h" />
+    <ClInclude Include="Library\assimp\types.h" />
+    <ClInclude Include="Library\assimp\vector2.h" />
+    <ClInclude Include="Library\assimp\vector3.h" />
+    <ClInclude Include="Library\assimp\version.h" />
+    <ClInclude Include="Library\assimp\Vertex.h" />
+    <ClInclude Include="Library\assimp\XMLTools.h" />
+    <ClInclude Include="Library\assimp\ZipArchiveIOSystem.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Tool\AssertException.h" />
     <ClInclude Include="Tool\BlobExpection.h" />
@@ -37,6 +129,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Library\assimp\.editorconfig" />
+    <None Include="Library\assimp\color4.inl" />
+    <None Include="Library\assimp\config.h.in" />
+    <None Include="Library\assimp\material.inl" />
+    <None Include="Library\assimp\matrix3x3.inl" />
+    <None Include="Library\assimp\matrix4x4.inl" />
+    <None Include="Library\assimp\quaternion.inl" />
+    <None Include="Library\assimp\SmoothingGroups.inl" />
+    <None Include="Library\assimp\vector2.inl" />
+    <None Include="Library\assimp\vector3.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -111,10 +215,12 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -127,10 +233,12 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,12 +253,14 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,12 +275,14 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\GitProject\Graphics\Graphics\Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

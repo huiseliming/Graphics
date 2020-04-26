@@ -3,6 +3,11 @@
 #include "../resource.h"
 #include "../Tool/Exception.h"
 
+#include "../Graphics/ImGui/imgui.h"
+#include "../Graphics/ImGui/imgui_impl_win32.h"
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 namespace Window
 {
 	int g_Width = 0;
@@ -30,6 +35,17 @@ namespace Window
 		WCHAR Path[MAX_PATH];
 		THROW_LAST_EXCEPT(0 != GetModuleFileName(NULL, Path, MAX_PATH));
 		g_ModulePath = Path;
+
+		//初始化ImGui
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontDefault();
+		//ImFont* font = io.Fonts->AddFontFromFileTTF(D3D12Helper::ModuleFilePathAppendFile<std::string,std::string>("font.ttf").c_str(), 24.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
+		//ImGui::GetIO().FontDefault = font;
+		ImGui::StyleColorsDark();
+		ImGui_ImplWin32_Init(g_hWnd);
+
 	}
 
 	void Show()
@@ -58,16 +74,18 @@ namespace Window
 
 	void Destroy()
 	{
+		//销毁ImGui
+		ImGui_ImplWin32_Shutdown();
+		ImGui::DestroyContext();
+		//销毁窗口
 		::DestroyWindow(g_hWnd);
 		::UnregisterClass(g_WndClass.lpszClassName, g_WndClass.hInstance);
 	}
 
-	//extern IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		//if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
-		//	return true;
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+			return true;
 
 		switch (msg)
 		{
