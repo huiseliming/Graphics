@@ -22,9 +22,12 @@ public:
 	static LRESULT WINAPI DefaultWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	HWND GetHWND() { return m_hWnd; }
 	int GetWidth(){ return m_Width; }
+	void SetWidth(int Width) { m_Width = Width; }
 	int GetHeight() { return m_Height; }
+	void SetHeight(int Height) { m_Height = Height; }
 	bool GetActivate() { return m_bIsActivate; }
 	void SetActivate(bool bIsActivate) { m_bIsActivate = bIsActivate; }
+
 private:
 	int m_Width = 0;
 	int m_Height = 0;

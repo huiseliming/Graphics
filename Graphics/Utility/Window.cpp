@@ -44,6 +44,8 @@ void Window::Show()
 
 bool Window::Resize(int Width, int Height)
 {
+	m_Width = Width;
+	m_Height = Height;
 	RECT Rect;
 	PRINT_LAST_ERROR_IF_FALSE(GetWindowRect(m_hWnd, &Rect));
 	PRINT_LAST_ERROR_IF_FALSE(MoveWindow(m_hWnd,Rect.left, Rect.top, Width, Height,true));

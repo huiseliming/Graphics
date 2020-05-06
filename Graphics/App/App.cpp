@@ -57,7 +57,9 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_SIZE: //大小改变
-		GlobalVariable<Graphics>::Get()->Resize((UINT)(UINT64)lParam & 0xFFFF, (UINT)(UINT64)lParam >> 16);
+		GlobalVariable<Graphics>::Get()->Resize((UINT)LOWORD(lParam) , (UINT)HIWORD(lParam));
+		GlobalVariable<Window>::Get()->SetWidth((UINT)LOWORD(lParam));
+		GlobalVariable<Window>::Get()->SetHeight((UINT)HIWORD(lParam));
 		//if (g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
 		//{
 		//	ImGui_ImplDX12_InvalidateDeviceObjects();
