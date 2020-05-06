@@ -52,24 +52,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Graphics\ImGui\imgui.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_demo.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_dx12.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -141,6 +123,24 @@
     </ClCompile>
     <ClCompile Include="Engine\GameInput.cpp">
       <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_demo.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_impl_dx12.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
+      <Filter>Source\Graphics\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -387,30 +387,6 @@
     <ClInclude Include="Library\AssimpHeader.h">
       <Filter>Source\Library</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imconfig.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_impl_dx12.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_internal.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_textedit.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
-      <Filter>Source\Graphics\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\Graphics.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -539,6 +515,30 @@
     </ClInclude>
     <ClInclude Include="Engine\Drawable.h">
       <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imconfig.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imgui.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imgui_impl_dx12.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imgui_internal.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imstb_textedit.h">
+      <Filter>Source\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
+      <Filter>Source\Graphics\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

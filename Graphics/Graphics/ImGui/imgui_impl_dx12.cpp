@@ -45,7 +45,9 @@ static DXGI_FORMAT                  g_RTVFormat = DXGI_FORMAT_UNKNOWN;
 static ID3D12Resource*              g_pFontTextureResource = NULL;
 static D3D12_CPU_DESCRIPTOR_HANDLE  g_hFontSrvCpuDescHandle = {};
 static D3D12_GPU_DESCRIPTOR_HANDLE  g_hFontSrvGpuDescHandle = {};
-
+/* Modify By DaiMingze Begin */
+static ID3D12DescriptorHeap* g_cbv_srv_descriptor_heap;
+/* Modify By DaiMingze End */
 struct FrameResources
 {
     ID3D12Resource*     IndexBuffer;
@@ -129,6 +131,11 @@ static void ImGui_ImplDX12_SetupRenderState(ImDrawData* draw_data, ID3D12Graphic
 // (this used to be set in io.RenderDrawListsFn and called by ImGui::Render(), but you can now call this directly from your main loop)
 void ImGui_ImplDX12_RenderDrawData(ImDrawData* draw_data, ID3D12GraphicsCommandList* ctx)
 {
+    /* Modify By DaiMingze Begin */
+    ID3D12DescriptorHeap* Heaps[] = { g_cbv_srv_descriptor_heap };
+    ctx->SetDescriptorHeaps(_countof(Heaps), Heaps);
+    /* Modify By DaiMingze End */
+
     // Avoid rendering when minimized
     if (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f)
         return;
@@ -620,15 +627,31 @@ bool ImGui_ImplDX12_Init(ID3D12Device* device, int num_frames_in_flight, DXGI_FO
     ImGuiIO& io = ImGui::GetIO();
     io.BackendRendererName = "imgui_impl_dx12";
     io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;  // We can honor the ImDrawCmd::VtxOffset field, allowing for large meshes.
-
+    
+    /* Modify By DaiMingze Begin */
+    D3D12_DESCRIPTOR_HEAP_DESC HeapDesc = {};
+    HeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    HeapDesc.NumDescriptors = 1;
+    HeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    device->CreateDescriptorHeap(&HeapDesc, IID_PPV_ARGS(&g_cbv_srv_descriptor_heap));
     g_pd3dDevice = device;
     g_RTVFormat = rtv_format;
-    g_hFontSrvCpuDescHandle = font_srv_cpu_desc_handle;
-    g_hFontSrvGpuDescHandle = font_srv_gpu_desc_handle;
+    g_hFontSrvCpuDescHandle = g_cbv_srv_descriptor_heap->GetCPUDescriptorHandleForHeapStart();
+    g_hFontSrvGpuDescHandle = g_cbv_srv_descriptor_heap->GetGPUDescriptorHandleForHeapStart();
     g_pFrameResources = new FrameResources[num_frames_in_flight];
     g_numFramesInFlight = num_frames_in_flight;
     g_frameIndex = UINT_MAX;
-    IM_UNUSED(cbv_srv_heap); // Unused in master branch (will be used by multi-viewports)
+    IM_UNUSED(g_cbv_srv_descriptor_heap); // Unused in master branch (will be used by multi-viewports)
+
+    //g_pd3dDevice = device;
+    //g_RTVFormat = rtv_format;
+    //g_hFontSrvCpuDescHandle = font_srv_cpu_desc_handle;
+    //g_hFontSrvGpuDescHandle = font_srv_gpu_desc_handle;
+    //g_pFrameResources = new FrameResources[num_frames_in_flight];
+    //g_numFramesInFlight = num_frames_in_flight;
+    //g_frameIndex = UINT_MAX;
+    //IM_UNUSED(cbv_srv_heap); // Unused in master branch (will be used by multi-viewports)
+    /* Modify By DaiMingze End */
 
     // Create buffers with a default size (they will later be grown as needed)
     for (int i = 0; i < num_frames_in_flight; i++)
@@ -645,6 +668,9 @@ bool ImGui_ImplDX12_Init(ID3D12Device* device, int num_frames_in_flight, DXGI_FO
 
 void ImGui_ImplDX12_Shutdown()
 {
+    /* Modify By DaiMingze Begin */
+    g_cbv_srv_descriptor_heap->Release();
+    /* Modify By DaiMingze End */
     ImGui_ImplDX12_InvalidateDeviceObjects();
     delete[] g_pFrameResources;
     g_pFrameResources = NULL;

@@ -15,6 +15,8 @@ public:
 
 	void RenderScene();
 
+	void RenderUI();
+
 	void Present();
 
 	void Resize(uint32_t Width, uint32_t Height);
@@ -37,7 +39,6 @@ private:
 	ColorBuffer m_DisplayBuffer[SwapChainBufferCount];
 	uint32_t m_DisplayIndex;
 	DepthBuffer m_DisplayDepthBuffer;
-
 
 	//йс©з
 	D3D12_VIEWPORT m_Viewport[2];

@@ -2,6 +2,7 @@
 #include "../Engine/SystemTime.h"
 #include "../Engine/Game.h"
 #include "CommandContext.h"
+#include "ImGui/imgui_impl_dx12.h"
 
 Graphics::Graphics():
     m_DisplayWidth(GlobalVariable<Window>::Get()->GetWidth()),
@@ -93,10 +94,14 @@ Graphics::Graphics():
         m_DisplayBuffer[i].CreateFromSwapChain(L"Primary SwapChain Buffer", DisplayBuffer.Detach());
     }
     m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
+    
+    ImGui_ImplDX12_Init(m_pDevice, SwapChainBufferCount, DXGI_FORMAT_R10G10B10A2_UNORM, nullptr, D3D12_CPU_DESCRIPTOR_HANDLE(), D3D12_GPU_DESCRIPTOR_HANDLE());
+    m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.f, 0.f, 0.f, 1.0f });
 }
 
 Graphics::~Graphics()
 {
+    ImGui_ImplDX12_Shutdown();
     m_CommandManager.Shutdown();
     CommandContext::DestroyAllContexts();
     DescriptorAllocator::DestroyAll();
@@ -118,36 +123,43 @@ Graphics::~Graphics()
 
 void Graphics::RenderScene()
 {
+    
     GraphicsContext& Context = GraphicsContext::Begin(L"Scene::Render");
     Context.SetViewportAndScissor(0, 0, m_DisplayWidth, m_DisplayHeight);
     Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, true);
-    static float a;
-    a += GetFrameTime();
-    if( (a - int( a)) > 0.5  )
-    {
-        m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.690196097f, 0.768627524f, 0.870588303f, 1.000000000f });
-    }else
-        m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.f, 0.f, 0.f, 1.000000000f });
     Context.ClearColor(m_DisplayBuffer[m_DisplayIndex]);
     Context.TransitionResource(m_DisplayDepthBuffer, D3D12_RESOURCE_STATE_DEPTH_WRITE, true);
     Context.ClearDepth(m_DisplayDepthBuffer);
+    Context.TransitionResource(m_DisplayDepthBuffer, D3D12_RESOURCE_STATE_DEPTH_READ);
     D3D12_CPU_DESCRIPTOR_HANDLE RTVs[] =
     {
         m_DisplayBuffer[m_DisplayIndex].GetRTV()
     };
-    Context.TransitionResource(m_DisplayDepthBuffer, D3D12_RESOURCE_STATE_DEPTH_READ);
     Context.SetRenderTargets(_countof(RTVs), RTVs, m_DisplayDepthBuffer.GetDSV_DepthReadOnly());
-    Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_PRESENT);
-
-
-
     Context.Finish();
 }
 
+void Graphics::RenderUI()
+{
+    //渲染ImGui
+    bool ShowDemoWindow = true;
+    if (ShowDemoWindow)
+        ImGui::ShowDemoWindow(&ShowDemoWindow);
 
+    GraphicsContext& UiContext = GraphicsContext::Begin();
+    UiContext.SetViewport(0, 0, float(m_DisplayWidth), float(m_DisplayHeight));
+    UiContext.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, true);
+    UiContext.SetRenderTargets(1, &m_DisplayBuffer[m_DisplayIndex].GetRTV(), m_DisplayDepthBuffer.GetDSV_DepthReadOnly());
+    ImGui::Render();
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), UiContext.GetCommandList());
+    UiContext.Finish();
+}
 
 void Graphics::Present()
 {
+    GraphicsContext& Context = GraphicsContext::Begin(L"Scene::Present");
+    Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_PRESENT);
+    Context.Finish();
     m_DisplayIndex = (m_DisplayIndex + 1) % SwapChainBufferCount;
 
     UINT PresentInterval = m_EnableVSync ? (std::min)(4, (int)Math::Round(m_FrameTime * 60.0f)) : 0;
@@ -194,6 +206,8 @@ void Graphics::Resize(uint32_t Width, uint32_t Height)
     m_DisplayHeight = Height;
 
     Console::Printf("渲染视口分辨率更改：%u x %u", m_DisplayWidth, m_DisplayHeight);
+    //根据新的宽度重构资源
+    ImGui_ImplDX12_InvalidateDeviceObjects();
 
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
         m_DisplayBuffer[i].Destroy();
@@ -213,6 +227,7 @@ void Graphics::Resize(uint32_t Width, uint32_t Height)
     ASSERT(m_DisplayDepthBuffer.GetResource() != nullptr);
     m_DisplayDepthBuffer.Destroy();
     m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
+    ImGui_ImplDX12_CreateDeviceObjects();
 }
 
 void Graphics::Terminate()

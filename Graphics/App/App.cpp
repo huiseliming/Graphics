@@ -2,11 +2,20 @@
 #include "../Utility/Utility.h"
 #include "../Graphics/Graphics.h"
 #include "../Engine/Game.h"
+#include "../Graphics/ImGui/imgui.h"
+#include "../Graphics/ImGui/imgui_impl_win32.h"
+#include "../Graphics/ImGui/imgui_impl_dx12.h"
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 App::App()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontDefault();
+	//ImFont* font = io.Fonts->AddFontFromFileTTF(D3D12Helper::ModuleFilePathAppendFile<std::string,std::string>("font.ttf").c_str(), 24.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
+	//ImGui::GetIO().FontDefault = font;
+	ImGui::StyleColorsDark();
+
 	GlobalVariable<App>::Set(this);
 	m_pWindow = std::make_unique<Window>();
 	m_pWindow->Create(L"MyGraphics", 800, 600, WndProc);
@@ -16,16 +25,18 @@ App::App()
 
 App::~App()
 {
-
 }
 
 bool App::Update()
 {
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
 	float DeltaTime = m_pGraphics->GetFrameTime();
 
 	m_pGame->Update(DeltaTime);
 	m_pGraphics->RenderScene();
-
+	m_pGraphics->RenderUI();
 	m_pGraphics->Present();
 
 	return !m_pGame->IsDone();
@@ -45,6 +56,7 @@ void App::Run()
 			::DispatchMessage(&Msg);
 			continue;
 		}
+
 		if (!Update())
 			break;
 	}
@@ -52,8 +64,12 @@ void App::Run()
 	m_pGraphics->Terminate();
 }
 
+extern IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		return true;
 	switch (msg)
 	{
 	case WM_SIZE: //大小改变
@@ -93,8 +109,12 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		App app;
-		app.Run();
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		App* app = new App;
+		app->Run();
+		delete app;
+		ImGui::DestroyContext();
 		return 0;
 	}
 	catch (const Exception& e)

@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Console.h"
 #include "Global.h"
+#include "../Graphics/ImGui/imgui_impl_win32.h"
 
 Window::Window()
 {
@@ -10,6 +11,7 @@ Window::Window()
 Window::Window(const wchar_t* WindowName, int Width, int Height, LRESULT(CALLBACK* WndProc)(HWND, UINT, WPARAM, LPARAM))
 {
 	Create(WindowName, Width, Height, WndProc);
+
 }
 
 Window::~Window()
@@ -34,7 +36,18 @@ void Window::Create(const wchar_t* WindowName, int Width, int Height, LRESULT(CA
 	::RegisterClassExW(&m_WndClass);
 	//使用窗口类创建窗口
 	m_hWnd = ::CreateWindowW(m_WndClass.lpszClassName, WindowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, m_Width, m_Height, NULL, NULL, m_WndClass.hInstance, NULL);
+	ImGui_ImplWin32_Init(m_hWnd);
 }
+
+void Window::Destroy()
+{
+	ImGui_ImplWin32_Shutdown();
+	//销毁窗口
+	::DestroyWindow(m_hWnd);
+	m_hWnd = NULL;
+	::UnregisterClass(m_WndClass.lpszClassName, m_WndClass.hInstance);
+}
+
 
 void Window::Show()
 {
@@ -50,14 +63,6 @@ bool Window::Resize(int Width, int Height)
 	PRINT_LAST_ERROR_IF_FALSE(GetWindowRect(m_hWnd, &Rect));
 	PRINT_LAST_ERROR_IF_FALSE(MoveWindow(m_hWnd,Rect.left, Rect.top, Width, Height,true));
 	return true;
-}
-
-void Window::Destroy()
-{
-	//销毁窗口
-	::DestroyWindow(m_hWnd);
-	m_hWnd = NULL;
-	::UnregisterClass(m_WndClass.lpszClassName, m_WndClass.hInstance);
 }
 
 void Window::MsgLoop()

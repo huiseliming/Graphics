@@ -14,9 +14,9 @@ public:
 	virtual ~Window();
 
 	void Create(const wchar_t* WindowName, int Width, int Height, LRESULT(CALLBACK* WndProc)(HWND, UINT, WPARAM, LPARAM) = DefaultWndProc);
+	void Destroy();
 	void Show();
 	bool Resize(int Width, int Height);
-	void Destroy();
 
 	static void MsgLoop();
 	static LRESULT WINAPI DefaultWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
