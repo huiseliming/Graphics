@@ -6,7 +6,7 @@
 
 //#define ASSERT(Expr) if(!(Expr)) THROW_ASSERT_EXCEPT(Expr)
 
-
+//‘› ±Œﬁ”√
 class AssertException : public Exception
 {
 public:

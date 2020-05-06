@@ -51,7 +51,7 @@ private:
 
 };
 
-
+//ÓÎÏ·¼ÆÊ±Æ÷
 class GameTimer
 {
 public:

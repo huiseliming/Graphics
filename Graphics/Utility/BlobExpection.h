@@ -2,9 +2,9 @@
 #include "Exception.h"
 #include "../Graphics/D3D12Header.h"
 
-//使用这个异常类抛出编译着色器时的错误信息
-#define THROW_BLOB_EXCEPT(hr,ErrorMsgBlob) if( FAILED((hr)) ) throw BlobExpection(__LINE__,__FILE__,(ErrorMsgBlob))
 
+#define THROW_BLOB_EXCEPT(hr,ErrorMsgBlob) if( FAILED((hr)) ) throw BlobExpection(__LINE__,__FILE__,(ErrorMsgBlob))
+//ID3DBlob附带异常信息的异常
 class BlobExpection :public Exception
 {
 public:

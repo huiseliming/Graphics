@@ -6,6 +6,7 @@
 #define EXCEPT(...)  Exception(__LINE__,__FILE__,##__VA_ARGS__)
 #define THROW_EXCEPT(...) throw EXCEPT(##__VA_ARGS__)
 
+//“Ï≥£ºÃ≥–ª˘¿‡
 class Exception : public std::exception
 {
 public:

@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-
+//øÿ÷∆Ã®¥Ú”°
 namespace Console
 {
     inline void Printf() {}

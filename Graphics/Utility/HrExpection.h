@@ -5,7 +5,7 @@
 #define HR_EXCEPT(hr) HrExpection(__LINE__,__FILE__,(hr))
 #define THROW_HR_EXCEPT(hr) throw HR_EXCEPT(hr)
 #define THROW_HR_EXCEPT_IF_FAILED(hr) if( FAILED((hr)) ) THROW_HR_EXCEPT(hr)
-
+//Com组件调用失败格式化文本信息异常
 class HrExpection : public Exception
 {
 public:

@@ -5,6 +5,8 @@
 #include "ColorBuffer.h"
 #include "DepthBuffer.h"
 
+
+//D3D12Õº–Œ∂‘œÛ
 class Graphics
 {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-
+//简单快捷的全局访问方式 但只支持根据类型设置一个指针
 template<typename T>
 class GlobalVariable
 {

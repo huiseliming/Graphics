@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <string>
 
-
+//窗口对象的简单封装
 class Window
 {
 public:
