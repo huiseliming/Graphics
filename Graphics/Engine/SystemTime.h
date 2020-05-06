@@ -42,7 +42,7 @@ public:
 
     static inline double TimeBetweenTicks( int64_t tick1, int64_t tick2 )
     {
-        return TicksToSeconds(tick2 - tick1);
+        return TicksToSeconds(tick1 - tick2);
     }
 
 private:

@@ -13,16 +13,19 @@ public:
 	Graphics();
 	virtual ~Graphics();
 
+	void RenderScene();
+
 	void Present();
 
+	void Resize(uint32_t Width, uint32_t Height);
+
 	void Terminate();
-
-
 
 	D3D12_CPU_DESCRIPTOR_HANDLE AllocateDescriptor(D3D12_DESCRIPTOR_HEAP_TYPE Type){ return m_DescriptorAllocator[Type].Allocate(1); }
 	void DiscardDescriptor(D3D12_DESCRIPTOR_HEAP_TYPE Type, D3D12_CPU_DESCRIPTOR_HANDLE CpuDescriptor) { return m_DescriptorAllocator[Type].Discard(CpuDescriptor); }
 	uint32_t GetDescriptorSize(D3D12_DESCRIPTOR_HEAP_TYPE Type) { return m_DescriptorSize[Type]; }
 	float GetFrameTime(){ return m_FrameTime; }
+
 private:
 	//const  Ù–‘
 	static const uint32_t SwapChainBufferCount = 3;
@@ -33,7 +36,8 @@ private:
 	DXGI_SAMPLE_DESC m_SwapChainSample;
 	ColorBuffer m_DisplayBuffer[SwapChainBufferCount];
 	uint32_t m_DisplayIndex;
-	DepthBuffer m_DepthBuffer;
+	DepthBuffer m_DisplayDepthBuffer;
+
 
 	// ”ø⁄
 	D3D12_VIEWPORT m_Viewport[2];

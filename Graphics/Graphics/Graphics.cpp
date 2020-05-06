@@ -92,7 +92,7 @@ Graphics::Graphics():
         THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
         m_DisplayBuffer[i].CreateFromSwapChain(L"Primary SwapChain Buffer", DisplayBuffer.Detach());
     }
-    m_DepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
+    m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
 }
 
 Graphics::~Graphics()
@@ -100,7 +100,7 @@ Graphics::~Graphics()
     m_CommandManager.Shutdown();
     CommandContext::DestroyAllContexts();
     DescriptorAllocator::DestroyAll();
-    m_DepthBuffer.Destroy();
+    m_DisplayDepthBuffer.Destroy();
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
         m_DisplayBuffer[i].Destroy();
     m_pSwapChain1->Release();
@@ -114,6 +114,34 @@ Graphics::~Graphics()
     }
 #endif
     m_pDevice->Release();
+}
+
+void Graphics::RenderScene()
+{
+    GraphicsContext& Context = GraphicsContext::Begin(L"Scene::Render");
+    Context.SetViewportAndScissor(0, 0, m_DisplayWidth, m_DisplayHeight);
+    Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, true);
+    static float a;
+    a += GetFrameTime();
+    if( (a - int( a)) > 0.5  )
+    {
+        m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.690196097f, 0.768627524f, 0.870588303f, 1.000000000f });
+    }else
+        m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.f, 0.f, 0.f, 1.000000000f });
+    Context.ClearColor(m_DisplayBuffer[m_DisplayIndex]);
+    Context.TransitionResource(m_DisplayDepthBuffer, D3D12_RESOURCE_STATE_DEPTH_WRITE, true);
+    Context.ClearDepth(m_DisplayDepthBuffer);
+    D3D12_CPU_DESCRIPTOR_HANDLE RTVs[] =
+    {
+        m_DisplayBuffer[m_DisplayIndex].GetRTV()
+    };
+    Context.TransitionResource(m_DisplayDepthBuffer, D3D12_RESOURCE_STATE_DEPTH_READ);
+    Context.SetRenderTargets(_countof(RTVs), RTVs, m_DisplayDepthBuffer.GetDSV_DepthReadOnly());
+    Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_PRESENT);
+
+
+
+    Context.Finish();
 }
 
 
@@ -153,6 +181,38 @@ void Graphics::Present()
         m_FrameTime = GlobalVariable<GameTimer>::Get()->GetDeltaTime();
     }
     ++m_FrameIndex;
+}
+
+void Graphics::Resize(uint32_t Width, uint32_t Height)
+{
+    // 0是不可能的
+    if (Width == 0 || Height == 0)
+        return;
+
+    m_CommandManager.IdleGPU();
+    m_DisplayWidth = Width;
+    m_DisplayHeight = Height;
+
+    Console::Printf("渲染视口分辨率更改：%u x %u", m_DisplayWidth, m_DisplayHeight);
+
+    for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
+        m_DisplayBuffer[i].Destroy();
+
+    THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->ResizeBuffers(SwapChainBufferCount, m_DisplayWidth, m_DisplayHeight, m_SwapChainFormat, 0));
+    
+    for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
+    {
+        Microsoft::WRL::ComPtr<ID3D12Resource> DisplayBuffer;
+        THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
+        m_DisplayBuffer[i].CreateFromSwapChain(L"Primary SwapChain Buffer", DisplayBuffer.Detach());
+    }
+
+    m_DisplayIndex = 0;
+    m_CommandManager.IdleGPU();
+
+    ASSERT(m_DisplayDepthBuffer.GetResource() != nullptr);
+    m_DisplayDepthBuffer.Destroy();
+    m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
 }
 
 void Graphics::Terminate()

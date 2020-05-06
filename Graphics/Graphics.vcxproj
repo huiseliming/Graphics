@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\App.h" />
+    <ClInclude Include="Engine\Drawable.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameInput.h" />
     <ClInclude Include="Engine\SystemTime.h" />

@@ -11,6 +11,10 @@ public:
 	Game& operator=(const Game&) = delete;
 	~Game();
 
+	void Begin();
+
+	void End();
+
 	bool IsDone();
 
 	void Update(float DeltaTime);

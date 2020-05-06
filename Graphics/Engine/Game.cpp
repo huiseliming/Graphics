@@ -2,6 +2,7 @@
 #include "GameInput.h"
 #include "SystemTime.h"
 #include "../Utility/Utility.h"
+#include "../Graphics/CommandContext.h"
 
 Game::Game()
 {
@@ -13,6 +14,15 @@ Game::Game()
 Game::~Game()
 {
 
+}
+
+void Game::Begin()
+{
+	m_pGameTimer->Reset();
+}
+
+void Game::End()
+{
 }
 
 bool Game::IsDone()
@@ -27,5 +37,4 @@ void Game::Update(float DeltaTime)
 
 void Game::RenderScene()
 {
-
 }
