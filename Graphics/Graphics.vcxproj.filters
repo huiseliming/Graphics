@@ -4,9 +4,6 @@
     <Filter Include="Source">
       <UniqueIdentifier>{e2cdcaa1-fa7b-4259-9611-6a14b9217c38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Math">
-      <UniqueIdentifier>{bcb883d7-212d-45b0-b9aa-10ea781b4294}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Graphics">
       <UniqueIdentifier>{139c4ee9-2066-4a0d-b6f5-eda0adee3b75}</UniqueIdentifier>
     </Filter>
@@ -16,18 +13,9 @@
     <Filter Include="Source\Engine">
       <UniqueIdentifier>{261a5ab4-8431-4d32-8e53-e38a031fdd4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Tool">
-      <UniqueIdentifier>{2a73756b-0e44-4d68-a753-b72407cc849d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source\Window">
-      <UniqueIdentifier>{260d9144-63f6-4aad-95f9-5a5f1c600674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Tool\Exception">
-      <UniqueIdentifier>{125571b4-2619-41fe-b7df-ce0f6de7ac47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Library">
       <UniqueIdentifier>{16db3125-fbbd-4be6-abcc-5b5884e6e7b5}</UniqueIdentifier>
@@ -44,11 +32,26 @@
     <Filter Include="Source\Library\assimp\port\AndroidJNI">
       <UniqueIdentifier>{86f85310-a711-48b7-ba37-21ea5bfd0baa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\CommandContext">
+      <UniqueIdentifier>{7a2e20d3-9ccc-4811-96c0-d68a5fd104db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utility">
+      <UniqueIdentifier>{6cce5a1e-5305-4858-8301-79378cb1d3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\App">
+      <UniqueIdentifier>{9d7f5e49-9c79-434d-b71f-77d8605c2449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utility\Math">
+      <UniqueIdentifier>{bcb883d7-212d-45b0-b9aa-10ea781b4294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\CommandQueue">
+      <UniqueIdentifier>{cca1895e-48c5-422a-b2bc-fcaf113f4121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Buffer">
+      <UniqueIdentifier>{829765f2-df8a-488a-9204-43e26bfe9aaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Window\Window.cpp">
-      <Filter>Source\Window</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
       <Filter>Source\Graphics\ImGui</Filter>
     </ClCompile>
@@ -67,26 +70,80 @@
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
       <Filter>Source\Graphics\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Graphics.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SystemTime.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Console.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Window.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\SIMD.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Global.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="App\App.cpp">
+      <Filter>Source\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Math\Frustum.cpp">
+      <Filter>Source\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Math\Random.cpp">
+      <Filter>Source\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CommandAllocatorPool.cpp">
+      <Filter>Source\Graphics\CommandQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CommandQueueManager.cpp">
+      <Filter>Source\Graphics\CommandQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DescriptorHeap.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CommandContext.cpp">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DynamicDescriptorHeap.cpp">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\LinearAllocator.cpp">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PipelineState.cpp">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\RootSignature.cpp">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Color.cpp">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ColorBuffer.cpp">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DepthBuffer.cpp">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GpuBuffer.cpp">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PixelBuffer.cpp">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameInput.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Window\Window.h">
-      <Filter>Source\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\HrException.h">
-      <Filter>Source\Tool\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\AssertException.h">
-      <Filter>Source\Tool\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\BlobExpection.h">
-      <Filter>Source\Tool\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\BaseException.h">
-      <Filter>Source\Tool\Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\Exception.h">
-      <Filter>Source\Tool\Exception</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\D3D12Header.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -354,6 +411,132 @@
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
       <Filter>Source\Graphics\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Graphics.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SystemTime.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Game.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Scene.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\AssertException.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Console.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Exception.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\HrExpection.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Utility.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Window.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\BlobExpection.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\SIMD.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Global.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="App\App.h">
+      <Filter>Source\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\BoundingPlane.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\BoundingSphere.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Common.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Frustum.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Hash.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Matrix3.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Matrix4.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Quaternion.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Random.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Scalar.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Transform.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\Vector.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math\VectorMath.h">
+      <Filter>Source\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CommandQueueManager.h">
+      <Filter>Source\Graphics\CommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CommandAllocatorPool.h">
+      <Filter>Source\Graphics\CommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DescriptorHeap.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CommandContext.h">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DynamicDescriptorHeap.h">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\LinearAllocator.h">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\PipelineState.h">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\RootSignature.h">
+      <Filter>Source\Graphics\CommandContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Color.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ColorBuffer.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DepthBuffer.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GpuBuffer.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GpuResource.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\PixelBuffer.h">
+      <Filter>Source\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameInput.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Graphics.rc">
@@ -395,6 +578,10 @@
     </None>
     <None Include="Library\assimp\vector3.inl">
       <Filter>Source\Library\assimp</Filter>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Utility\Math\Functions.inl">
+      <Filter>Source\Utility\Math</Filter>
     </None>
   </ItemGroup>
 </Project>

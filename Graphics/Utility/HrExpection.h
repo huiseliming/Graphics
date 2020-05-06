@@ -1,5 +1,10 @@
 #pragma once
-#include "BaseException.h"
+#include "Exception.h"
+#include "Window.h"
+
+#define HR_EXCEPT(hr) HrExpection(__LINE__,__FILE__,(hr))
+#define THROW_HR_EXCEPT(hr) throw HR_EXCEPT(hr)
+#define THROW_HR_EXCEPT_IF_FAILED(hr) if( FAILED((hr)) ) THROW_HR_EXCEPT(hr)
 
 class HrExpection : public Exception
 {
@@ -21,7 +26,7 @@ public:
 	}
 	const char* GetType() const noexcept
 	{
-		return "HrExpection";
+		return "HresultExpection";
 	}
 	HRESULT GetErrorCode() const noexcept
 	{
@@ -34,23 +39,21 @@ public:
 	static std::string TranslateErrorCode(HRESULT hr) noexcept
 	{
 		char* pMsgBuf = nullptr;
-		// windows will allocate memory for err string and make our pointer point to it
+		//获取格式化错误
 		const DWORD nMsgLen = FormatMessageA(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER |
 			FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 			nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 			reinterpret_cast<LPSTR>(&pMsgBuf), 0, nullptr
 			);
-		// 0 string length returned indicates a failure
-		if (nMsgLen == 0)
-		{
+		//长度小于0说明未获取到格式化的错误
+		if (nMsgLen <= 0)
 			return "Unidentified error code";
-		}
-		// copy error string from windows-allocated buffer to std::string
-		std::string errorString = pMsgBuf;
-		// free windows buffer
+		// 拷贝字符串
+		std::string errorMsg = pMsgBuf;
+		// 这个字符串是Windows的系统内存，归还系统
 		LocalFree(pMsgBuf);
-		return errorString;
+		return errorMsg;
 	}
 private:
 	HRESULT m_hr;

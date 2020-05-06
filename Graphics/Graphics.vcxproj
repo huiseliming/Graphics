@@ -19,17 +19,55 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="App\App.cpp" />
+    <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\GameInput.cpp" />
+    <ClCompile Include="Engine\SystemTime.cpp" />
+    <ClCompile Include="Graphics\Color.cpp" />
+    <ClCompile Include="Graphics\ColorBuffer.cpp" />
+    <ClCompile Include="Graphics\CommandAllocatorPool.cpp" />
+    <ClCompile Include="Graphics\CommandContext.cpp" />
+    <ClCompile Include="Graphics\CommandQueueManager.cpp" />
+    <ClCompile Include="Graphics\DepthBuffer.cpp" />
+    <ClCompile Include="Graphics\DescriptorHeap.cpp" />
+    <ClCompile Include="Graphics\DynamicDescriptorHeap.cpp" />
+    <ClCompile Include="Graphics\GpuBuffer.cpp" />
+    <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_demo.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_impl_dx12.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="Window\Window.cpp" />
+    <ClCompile Include="Graphics\LinearAllocator.cpp" />
+    <ClCompile Include="Graphics\PipelineState.cpp" />
+    <ClCompile Include="Graphics\PixelBuffer.cpp" />
+    <ClCompile Include="Graphics\RootSignature.cpp" />
+    <ClCompile Include="Utility\Console.cpp" />
+    <ClCompile Include="Utility\Global.cpp" />
+    <ClCompile Include="Utility\Math\Frustum.cpp" />
+    <ClCompile Include="Utility\Math\Random.cpp" />
+    <ClCompile Include="Utility\SIMD.cpp" />
+    <ClCompile Include="Utility\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App\App.h" />
+    <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\GameInput.h" />
+    <ClInclude Include="Engine\SystemTime.h" />
+    <ClInclude Include="Graphics\Color.h" />
+    <ClInclude Include="Graphics\ColorBuffer.h" />
+    <ClInclude Include="Graphics\CommandAllocatorPool.h" />
+    <ClInclude Include="Graphics\CommandContext.h" />
+    <ClInclude Include="Graphics\CommandQueueManager.h" />
     <ClInclude Include="Graphics\D3D12Header.h" />
     <ClInclude Include="Graphics\d3dx12.h" />
+    <ClInclude Include="Graphics\DepthBuffer.h" />
+    <ClInclude Include="Graphics\DescriptorHeap.h" />
+    <ClInclude Include="Graphics\DynamicDescriptorHeap.h" />
+    <ClInclude Include="Graphics\GpuBuffer.h" />
+    <ClInclude Include="Graphics\GpuResource.h" />
+    <ClInclude Include="Graphics\Graphics.h" />
     <ClInclude Include="Graphics\ImGui\imconfig.h" />
     <ClInclude Include="Graphics\ImGui\imgui.h" />
     <ClInclude Include="Graphics\ImGui\imgui_impl_dx12.h" />
@@ -38,6 +76,11 @@
     <ClInclude Include="Graphics\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Graphics\ImGui\imstb_textedit.h" />
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Graphics\LinearAllocator.h" />
+    <ClInclude Include="Graphics\PipelineState.h" />
+    <ClInclude Include="Graphics\PixelBuffer.h" />
+    <ClInclude Include="Graphics\RootSignature.h" />
+    <ClInclude Include="Graphics\Scene.h" />
     <ClInclude Include="Library\AssimpHeader.h" />
     <ClInclude Include="Library\assimp\aabb.h" />
     <ClInclude Include="Library\assimp\ai_assert.h" />
@@ -117,12 +160,28 @@
     <ClInclude Include="Library\assimp\XMLTools.h" />
     <ClInclude Include="Library\assimp\ZipArchiveIOSystem.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Tool\AssertException.h" />
-    <ClInclude Include="Tool\BlobExpection.h" />
-    <ClInclude Include="Tool\BaseException.h" />
-    <ClInclude Include="Tool\Exception.h" />
-    <ClInclude Include="Tool\HrException.h" />
-    <ClInclude Include="Window\Window.h" />
+    <ClInclude Include="Utility\AssertException.h" />
+    <ClInclude Include="Utility\BlobExpection.h" />
+    <ClInclude Include="Utility\Console.h" />
+    <ClInclude Include="Utility\Exception.h" />
+    <ClInclude Include="Utility\Global.h" />
+    <ClInclude Include="Utility\HrExpection.h" />
+    <ClInclude Include="Utility\Math\BoundingPlane.h" />
+    <ClInclude Include="Utility\Math\BoundingSphere.h" />
+    <ClInclude Include="Utility\Math\Common.h" />
+    <ClInclude Include="Utility\Math\Frustum.h" />
+    <ClInclude Include="Utility\Math\Hash.h" />
+    <ClInclude Include="Utility\Math\Matrix3.h" />
+    <ClInclude Include="Utility\Math\Matrix4.h" />
+    <ClInclude Include="Utility\Math\Quaternion.h" />
+    <ClInclude Include="Utility\Math\Random.h" />
+    <ClInclude Include="Utility\Math\Scalar.h" />
+    <ClInclude Include="Utility\Math\Transform.h" />
+    <ClInclude Include="Utility\Math\Vector.h" />
+    <ClInclude Include="Utility\Math\VectorMath.h" />
+    <ClInclude Include="Utility\SIMD.h" />
+    <ClInclude Include="Utility\Utility.h" />
+    <ClInclude Include="Utility\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Graphics.rc" />
@@ -141,6 +200,8 @@
     <None Include="Library\assimp\SmoothingGroups.inl" />
     <None Include="Library\assimp\vector2.inl" />
     <None Include="Library\assimp\vector3.inl" />
+    <None Include="packages.config" />
+    <None Include="Utility\Math\Functions.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -287,5 +348,12 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\WinPixEventRuntime.1.0.200127001\build\WinPixEventRuntime.targets" Condition="Exists('..\packages\WinPixEventRuntime.1.0.200127001\build\WinPixEventRuntime.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\WinPixEventRuntime.1.0.200127001\build\WinPixEventRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WinPixEventRuntime.1.0.200127001\build\WinPixEventRuntime.targets'))" />
+  </Target>
 </Project>

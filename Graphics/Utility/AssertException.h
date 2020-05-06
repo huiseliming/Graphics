@@ -1,5 +1,11 @@
 #pragma once
-#include "BaseException.h"
+#include "Exception.h"
+
+#define ASSERT_EXCEPT(Expr) AssertException(__LINE__,__FILE__,#Expr)
+#define THROW_ASSERT_EXCEPT(Expr) if(!(Expr)) throw ASSERT_EXCEPT(Expr)
+
+//#define ASSERT(Expr) if(!(Expr)) THROW_ASSERT_EXCEPT(Expr)
+
 
 class AssertException : public Exception
 {
