@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\App.h" />
-    <ClInclude Include="Engine\Drawable.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameInput.h" />
     <ClInclude Include="Engine\SystemTime.h" />
@@ -65,6 +64,7 @@
     <ClInclude Include="Graphics\d3dx12.h" />
     <ClInclude Include="Graphics\DepthBuffer.h" />
     <ClInclude Include="Graphics\DescriptorHeap.h" />
+    <ClInclude Include="Graphics\Drawable.h" />
     <ClInclude Include="Graphics\DynamicDescriptorHeap.h" />
     <ClInclude Include="Graphics\GpuBuffer.h" />
     <ClInclude Include="Graphics\GpuResource.h" />
