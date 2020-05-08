@@ -19,6 +19,8 @@ public:
 
 	void Present();
 
+	void WaitForNextFrame();
+
 	void Resize(uint32_t Width, uint32_t Height);
 
 	void Terminate();
@@ -50,25 +52,28 @@ private:
 	//D3D12驱动实例
 	ID3D12Device* m_pDevice;
 	//交换链
-	IDXGISwapChain1* m_pSwapChain1;
+	IDXGISwapChain3* m_pSwapChain3;
+	//等待对象
+	HANDLE m_SwapChainWaitableObject;
 	//命令队列管理器
 	CommandQueueManager m_CommandManager;
 
-	//是否启用垂直同步
-	bool m_EnableVSync;
-	//是否限制到30帧
-	bool m_LimitTo30Hz;
+	// 仅Cpu可见的描述符堆 持久使用直到程序关闭的的堆
+	DescriptorAllocator m_DescriptorAllocator[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
+	uint32_t m_DescriptorSize[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
+
+
 	//上一帧渲染完成的cpu周期数，也是这一帧的开始
 	int64_t m_FrameStartTick;
 	//上一个两帧之间的时间间隔
 	float  m_FrameTime;
 	//当前在渲染的帧索引
 	uint64_t m_FrameIndex;
+	//是否启用垂直同步
+	bool m_EnableVSync;
+	//是否限制到30帧
+	bool m_LimitTo30Hz;
 
-
-	// 仅Cpu可见的描述符堆 持久使用直到程序关闭的的堆
-	DescriptorAllocator m_DescriptorAllocator[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
-	uint32_t m_DescriptorSize[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
 };
 
 

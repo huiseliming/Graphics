@@ -4,10 +4,13 @@
 #include "CommandContext.h"
 #include "ImGui/imgui_impl_dx12.h"
 
+#ifndef USE_DAIMINGZE_MODIFY
+static ID3D12DescriptorHeap* s_pImGuiDescriptorHeap;
+#endif
 Graphics::Graphics():
     m_DisplayWidth(GlobalVariable<Window>::Get()->GetWidth()),
     m_DisplayHeight(GlobalVariable<Window>::Get()->GetHeight()),
-    m_SwapChainFormat(DXGI_FORMAT_R10G10B10A2_UNORM),
+    m_SwapChainFormat(DXGI_FORMAT_R8G8B8A8_UNORM),
     m_SwapChainSample(DXGI_SAMPLE_DESC{1,0}),
     m_DisplayIndex(0),
     m_EnableVSync(false),
@@ -73,8 +76,8 @@ Graphics::Graphics():
     GlobalVariable<CommandQueueManager>::Set(&m_CommandManager);
 
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-    swapChainDesc.Width = m_DisplayWidth;
-    swapChainDesc.Height = m_DisplayHeight;
+    swapChainDesc.Width = 0;
+    swapChainDesc.Height = 0;
     swapChainDesc.Format = m_SwapChainFormat;
     swapChainDesc.Scaling = DXGI_SCALING_NONE;
     swapChainDesc.SampleDesc = m_SwapChainSample;
@@ -82,25 +85,45 @@ Graphics::Graphics():
     //swapChainDesc.SampleDesc.Count = 1;
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swapChainDesc.BufferCount = SwapChainBufferCount;
-    swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+    swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
     swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+    {
     //创建交换链
-    THROW_HR_EXCEPT_IF_FAILED(dxgiFactory->CreateSwapChainForHwnd(m_CommandManager.GetGraphicsQueue().GetCommandQueue(), GlobalVariable<Window>::Get()->GetHWND(), &swapChainDesc, nullptr, nullptr, &m_pSwapChain1));
-
+        Microsoft::WRL::ComPtr<IDXGISwapChain1> pSwapChain1;
+        THROW_HR_EXCEPT_IF_FAILED(dxgiFactory->CreateSwapChainForHwnd(m_CommandManager.GetGraphicsQueue().GetCommandQueue(), GlobalVariable<Window>::Get()->GetHWND(), &swapChainDesc, nullptr, nullptr, &pSwapChain1));
+        pSwapChain1->QueryInterface(IID_PPV_ARGS(&m_pSwapChain3));
+    }
+    //最小延迟
+    m_pSwapChain3->SetMaximumFrameLatency(SwapChainBufferCount);
+    //创建等待对象
+    m_SwapChainWaitableObject = m_pSwapChain3->GetFrameLatencyWaitableObject();
+    
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
     {
         Microsoft::WRL::ComPtr<ID3D12Resource> DisplayBuffer;
-        THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
+        THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain3->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
         m_DisplayBuffer[i].CreateFromSwapChain(L"Primary SwapChain Buffer", DisplayBuffer.Detach());
     }
     m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
-    
-    ImGui_ImplDX12_Init(m_pDevice, SwapChainBufferCount, DXGI_FORMAT_R10G10B10A2_UNORM, nullptr, D3D12_CPU_DESCRIPTOR_HANDLE(), D3D12_GPU_DESCRIPTOR_HANDLE());
+
+#ifndef USE_DAIMINGZE_MODIFY
+    D3D12_DESCRIPTOR_HEAP_DESC HeapDesc = {};
+    HeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    HeapDesc.NumDescriptors = 1;
+    HeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    m_pDevice->CreateDescriptorHeap(&HeapDesc, IID_PPV_ARGS(&s_pImGuiDescriptorHeap));
+    ImGui_ImplDX12_Init(m_pDevice, SwapChainBufferCount, m_SwapChainFormat, s_pImGuiDescriptorHeap, s_pImGuiDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), s_pImGuiDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+#else
+    ImGui_ImplDX12_Init(m_pDevice, SwapChainBufferCount, m_SwapChainFormat, nullptr, D3D12_CPU_DESCRIPTOR_HANDLE(), D3D12_GPU_DESCRIPTOR_HANDLE());
+#endif
     m_DisplayBuffer[m_DisplayIndex].SetClearColor({ 0.f, 0.f, 0.f, 1.0f });
 }
 
 Graphics::~Graphics()
 {
+#ifndef USE_DAIMINGZE_MODIFY
+    s_pImGuiDescriptorHeap->Release();
+#endif
     ImGui_ImplDX12_Shutdown();
     m_CommandManager.Shutdown();
     CommandContext::DestroyAllContexts();
@@ -108,7 +131,7 @@ Graphics::~Graphics()
     m_DisplayDepthBuffer.Destroy();
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
         m_DisplayBuffer[i].Destroy();
-    m_pSwapChain1->Release();
+    m_pSwapChain3->Release();
 
 #if defined(_DEBUG)
     ID3D12DebugDevice* debugInterface;
@@ -122,8 +145,7 @@ Graphics::~Graphics()
 }
 
 void Graphics::RenderScene()
-{
-    
+{  
     GraphicsContext& Context = GraphicsContext::Begin(L"Scene::Render");
     Context.SetViewportAndScissor(0, 0, m_DisplayWidth, m_DisplayHeight);
     Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, true);
@@ -141,6 +163,13 @@ void Graphics::RenderScene()
 
 void Graphics::RenderUI()
 {
+
+    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+    ImGui::Text("Current average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::Checkbox("EnableVSync", &m_EnableVSync);      // Edit bools storing our window open/close state
+    ImGui::End();
+
+
     //渲染ImGui
     bool ShowDemoWindow = true;
     if (ShowDemoWindow)
@@ -149,7 +178,10 @@ void Graphics::RenderUI()
     GraphicsContext& UiContext = GraphicsContext::Begin();
     UiContext.SetViewport(0, 0, float(m_DisplayWidth), float(m_DisplayHeight));
     UiContext.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, true);
-    UiContext.SetRenderTargets(1, &m_DisplayBuffer[m_DisplayIndex].GetRTV(), m_DisplayDepthBuffer.GetDSV_DepthReadOnly());
+    UiContext.SetRenderTargets(1, &m_DisplayBuffer[m_DisplayIndex].GetRTV());
+#ifndef USE_DAIMINGZE_MODIFY
+    UiContext.SetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,s_pImGuiDescriptorHeap);
+#endif
     ImGui::Render();
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), UiContext.GetCommandList());
     UiContext.Finish();
@@ -160,39 +192,23 @@ void Graphics::Present()
     GraphicsContext& Context = GraphicsContext::Begin(L"Scene::Present");
     Context.TransitionResource(m_DisplayBuffer[m_DisplayIndex], D3D12_RESOURCE_STATE_PRESENT);
     Context.Finish();
+
     m_DisplayIndex = (m_DisplayIndex + 1) % SwapChainBufferCount;
 
-    UINT PresentInterval = m_EnableVSync ? (std::min)(4, (int)Math::Round(m_FrameTime * 60.0f)) : 0;
-
-    m_pSwapChain1->Present(PresentInterval, 0);
-
-    // Test robustness to handle spikes in CPU time
-    //if (s_DropRandomFrames)
-    //{
-    //    if (std::rand() % 25 == 0)
-    //        BusyLoopSleep(0.010);
-    //}
-    GlobalVariable<GameTimer>::Get()->Tick();
-    if (m_EnableVSync)
-    {
-        // With VSync enabled, the time step between frames becomes a multiple of 16.666 ms.  We need
-        // to add logic to vary between 1 and 2 (or 3 fields).  This delta time also determines how
-        // long the previous frame should be displayed (i.e. the present interval.)
-        m_FrameTime = (m_LimitTo30Hz ? 2.0f : 1.0f) / 60.0f;
-        //if (m_DropRandomFrames)
-        //{
-        //    if (std::rand() % 50 == 0)
-        //        m_FrameTime += (1.0f / 60.0f);
-        //}
-    }
+    if(m_EnableVSync) // 启用垂直同步
+        m_pSwapChain3->Present(1, 0);
     else
-    {
-        // When running free, keep the most recent total frame time as the time step for
-        // the next frame simulation.  This is not super-accurate, but assuming a frame
-        // time varies smoothly, it should be close enough.
-        m_FrameTime = GlobalVariable<GameTimer>::Get()->GetDeltaTime();
-    }
+        m_pSwapChain3->Present(0, 0);
     ++m_FrameIndex;
+
+}
+
+void Graphics::WaitForNextFrame()
+{
+    m_CommandManager.GetGraphicsQueue().WaitForIdle();
+    WaitForSingleObject(m_SwapChainWaitableObject, INFINITE);
+    GlobalVariable<GameTimer>::Get()->Tick();
+    m_FrameTime = GlobalVariable<GameTimer>::Get()->GetDeltaTime();
 }
 
 void Graphics::Resize(uint32_t Width, uint32_t Height)
@@ -202,30 +218,42 @@ void Graphics::Resize(uint32_t Width, uint32_t Height)
         return;
 
     m_CommandManager.IdleGPU();
+
+    DXGI_SWAP_CHAIN_DESC1 sd;
+    m_pSwapChain3->GetDesc1(&sd);
+    sd.Width = Width;
+    sd.Height = Height;
     m_DisplayWidth = Width;
     m_DisplayHeight = Height;
+    Console::Printf("渲染视口分辨率更改：%u x %u\n", m_DisplayWidth, m_DisplayHeight);
 
-    Console::Printf("渲染视口分辨率更改：%u x %u", m_DisplayWidth, m_DisplayHeight);
-    //根据新的宽度重构资源
+    // 根据新的宽度重构资源
     ImGui_ImplDX12_InvalidateDeviceObjects();
-
+    // 清理缓冲
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
         m_DisplayBuffer[i].Destroy();
-
-    THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->ResizeBuffers(SwapChainBufferCount, m_DisplayWidth, m_DisplayHeight, m_SwapChainFormat, 0));
-    
+    ASSERT(m_DisplayDepthBuffer.GetResource() != nullptr);
+    m_DisplayDepthBuffer.Destroy();
+    // 重建交换链
+    IDXGIFactory4* dxgiFactory = NULL;
+    m_pSwapChain3->GetParent(IID_PPV_ARGS(&dxgiFactory));
+    m_pSwapChain3->Release();
+    CloseHandle(m_SwapChainWaitableObject);
+    IDXGISwapChain1* pSwapChain1 = nullptr;
+    THROW_HR_EXCEPT_IF_FAILED(dxgiFactory->CreateSwapChainForHwnd(m_CommandManager.GetGraphicsQueue().GetCommandQueue(), GlobalVariable<Window>::Get()->GetHWND(), &sd, nullptr, nullptr, &pSwapChain1));
+    pSwapChain1->QueryInterface(IID_PPV_ARGS(&m_pSwapChain3));
+    pSwapChain1->Release();
+    dxgiFactory->Release();
+    m_pSwapChain3->SetMaximumFrameLatency(SwapChainBufferCount);
+    m_SwapChainWaitableObject = m_pSwapChain3->GetFrameLatencyWaitableObject();
+    //重建缓冲
     for (uint32_t i = 0; i < SwapChainBufferCount; ++i)
     {
         Microsoft::WRL::ComPtr<ID3D12Resource> DisplayBuffer;
-        THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain1->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
+        THROW_HR_EXCEPT_IF_FAILED(m_pSwapChain3->GetBuffer(i, IID_PPV_ARGS(&DisplayBuffer)));
         m_DisplayBuffer[i].CreateFromSwapChain(L"Primary SwapChain Buffer", DisplayBuffer.Detach());
     }
-
     m_DisplayIndex = 0;
-    m_CommandManager.IdleGPU();
-
-    ASSERT(m_DisplayDepthBuffer.GetResource() != nullptr);
-    m_DisplayDepthBuffer.Destroy();
     m_DisplayDepthBuffer.Create(L"Scene Depth Buffer", m_DisplayWidth, m_DisplayHeight, DXGI_FORMAT_D32_FLOAT);
     ImGui_ImplDX12_CreateDeviceObjects();
 }

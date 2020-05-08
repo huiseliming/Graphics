@@ -35,10 +35,10 @@ bool App::Update()
 	float DeltaTime = m_pGraphics->GetFrameTime();
 
 	m_pGame->Update(DeltaTime);
+	m_pGraphics->WaitForNextFrame();
 	m_pGraphics->RenderScene();
 	m_pGraphics->RenderUI();
 	m_pGraphics->Present();
-
 	return !m_pGame->IsDone();
 }
 

@@ -23,6 +23,7 @@ void Game::Begin()
 
 void Game::End()
 {
+	m_pGameTimer->Stop();
 }
 
 bool Game::IsDone()
